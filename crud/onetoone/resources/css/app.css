@@ -1,0 +1,17 @@
+main {
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-options {
+    display: flex;
+    flex: 3;
+}
+.btn-options .btn {
+    margin-left: 5px;
+}
+
+.buttons-div{
+    margin-top: 20px;
+}
