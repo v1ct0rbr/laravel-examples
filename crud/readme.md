@@ -1,1 +1,1 @@
-* Exercicios de laravel
+* Mini projetos de para a implementação do CRUD e possíveis relacionamentos

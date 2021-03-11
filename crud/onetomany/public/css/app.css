@@ -15,3 +15,7 @@ main {
 .buttons-div{
     margin-top: 20px;
 }
+
+.ck-editor__editable{
+    min-height: 200px;
+}

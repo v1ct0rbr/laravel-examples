@@ -5,6 +5,7 @@
     ClassicEditor.create(document.querySelector("#editor"))
         .then((editor) => {
             myEditor = editor;
+
             editor.model.document.on("change:data", () => {
                 console.log(editor.getData());
                 document.getElementById("editor_max_length");

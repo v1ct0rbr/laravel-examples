@@ -1,33 +1,34 @@
-@extends('layouts.app', ['title' => "Lista de Usuários"])
+@extends('layouts.app', ['title' => "Lista de Posts"])
 
 @section('content')
-<H2>Lista de Usuários</H2>
+<H2>Lista de posts</H2>
 
 @include('includes.messages')
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">email</th>
+            <th scope="col">title</th>
+            <th scope="col">content</th>
             <th scope="col">opções</th>
         </tr>
     </thead>
     <tbody>
-        @if (count($users))
-        @foreach($users as $key=> $user)
+        @if (count($posts))
+        @foreach($posts as $key=> $post)
         <tr>
             <th scope="row">{{$key+1}}</th>
-            <td> {{$user->name}}</td>
-            <td> {{$user->email}}</td>
+            <td> {{$post->title}}</td>
+            <td> {{ substr(strip_tags($post->content), 0,100).'...'}}</td>
             <td>
                 <div class="btn-options">
-                    <a class="btn btn-primary" href="{{route('users.edit', ['user'=>$user->id])}}"><i class="fas fa-edit"></i></a>
-                    <form action="{{ route('users.destroy', ['user' => $user->id])}}" method="POST">
+                    <a class="btn btn-primary" href="{{route('posts.edit', ['post'=>$post->id])}}"><i class="fas fa-edit"></i></a>
+                    <form action="{{ route('posts.destroy', ['post' => $post->id])}}" method="POST">
                         @method('DELETE')
                         @csrf
                         <button class="btn btn-danger delete" type="submit"><i class="fas fa-trash"></i></button>
                     </form>
+                    <a class="btn btn-primary" href="{{route('posts.show', ['post'=>$post->id])}}"><i class="fas fa-info-circle"></i></a>
                 </div>
             </td>
         </tr>
@@ -46,7 +47,7 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('/js/page-users-list.js')}}">
+<script src="{{ asset('/js/page-posts-list.js')}}">
 </script>
 
 @endsection

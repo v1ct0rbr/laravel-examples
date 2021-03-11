@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Models\Post;
+use Exception;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return 'implementando';
+        $posts = Post::all();
+        return view('post-list', compact('posts'));
     }
 
     /**
@@ -32,9 +36,16 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-       return back()->with('info', "Implementando");
+        $validated = $request->validate(['']);
+        try {
+            $post = new Post(['title' => $request->title, 'content' => $request->content]);
+            $post->save();
+            return redirect()->route('posts.edit', ['post' => $post->id])->with('success', 'Cadastrado com sucesso');
+        } catch (Exception $e) {
+            return back()->with('error', [['title' => 'erro no cadastro', 'details' => $e->getMessage()]]);
+        }
     }
 
     /**
@@ -45,7 +56,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        return view('post-details', compact('post'));
     }
 
     /**
@@ -56,7 +68,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+
+        return view('post-edit', compact('post'));
     }
 
     /**
@@ -66,9 +80,18 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
         //
+        error_log($request->id);
+        $validated = $request->validate([$id]);
+        try {
+            $updatePost = Post::findOrFail($id);
+            $updatePost->update(['title' => $request->title, 'content' => $request->content]);
+            return redirect()->route('posts.edit', ['post' => $updatePost->id])->with('success', 'Atualizado com sucesso');
+        } catch (Exception $e) {
+            return back()->with('error', [['title' => 'erro na atualização', 'details' => $e->getMessage()]]);
+        }
     }
 
     /**
@@ -80,5 +103,15 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        try {
+            $result = Post::destroy($id);
+            if ($result)
+                return redirect()->route('posts.index')->with('success', 'Excluído com sucesso');
+            else {
+                return back()->with('error', [['title' => 'Item não excluído', 'details' => 'Tente novamento mais tarde']]);
+            }
+        } catch (Exception $e) {
+            return back()->with('error', [['title' => 'erro na exclusão', 'details' => $e->getMessage()]]);
+        }
     }
 }
