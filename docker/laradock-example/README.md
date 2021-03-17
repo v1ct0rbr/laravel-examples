@@ -1,0 +1,1 @@
+## Exemplo de projeto que configura o <a href="https://github.com/laradock">laradock</a> como mecanismo de ligação aos containers do docker

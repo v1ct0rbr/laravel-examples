@@ -1,0 +1,29 @@
+version: "3.5"
+
+services:
+  laravel-app:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./:/usr/share/nginx
+    networks:
+      - app-network
+  mariadb-app:
+    image: mariadb:10.5.9-focal
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel-docker
+      MYSQL_USER: laravel-docker
+      MYSQL_PASSWORD: teste123
+      MYSQL_ROOT_PASSWORD: laravel123
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
