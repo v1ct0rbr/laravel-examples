@@ -1,0 +1,31 @@
+version: "3.5"
+
+services:
+  onetoone-app:
+    build: .
+    ports:
+      - "8888:80"
+    volumes:
+      - ./:/var/www
+    networks:
+      - onetoone-app-network
+    environment:
+      WEB_DOCUMENT_ROOT: /var/www/html
+  manytomanydb:
+    image: mariadb:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3308:3306"
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: onetoone
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - onetoone-app-network
+networks:
+  onetoone-app-network:
+    driver: bridge
