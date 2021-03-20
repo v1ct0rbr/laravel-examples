@@ -103,9 +103,6 @@ class UsersController extends Controller
             }
         }
         
-
-
-
         return view('users-update', ['user' => $user, 'roles' => $roles, 'user_roles' => $user_roles_ids]);
     }
 

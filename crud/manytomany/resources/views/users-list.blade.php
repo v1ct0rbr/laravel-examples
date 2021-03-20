@@ -10,6 +10,7 @@
             <th scope="col">#</th>
             <th scope="col">First</th>
             <th scope="col">email</th>
+            <th scope="col">Permissões</th>
             <th scope="col">opções</th>
         </tr>
     </thead>
@@ -19,10 +20,19 @@
         <tr>
             <th scope="row">{{$key+1}}</th>
             <td> {{$user->name}}</td>
-            <td> {{$user->email}}</td>
+            <td> <b> {{$user->email}} </b>
+            </td>
+            <td>
+                <ul>
+                    @foreach ($user->roles as $item)
+                    <li>{{$item->name}}</li>
+                    @endforeach
+                </ul>
+            </td>
             <td>
                 <div class="btn-options">
-                    <a class="btn btn-primary" href="{{route('users.edit', ['user'=>$user->id])}}"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-primary" href="{{route('users.edit', ['user'=>$user->id])}}"><i
+                            class="fas fa-edit"></i></a>
                     <form action="{{ route('users.destroy', ['user' => $user->id])}}" method="POST">
                         @method('DELETE')
                         @csrf
