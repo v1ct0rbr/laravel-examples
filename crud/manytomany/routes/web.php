@@ -20,10 +20,6 @@ Route::resource('/users', UsersController::class);
     //ok
 }); */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-
-
-
+Route::get('/', function () {
+    return redirect()->route('users.index');
+});
