@@ -1,0 +1,39 @@
+version: "3.5"
+
+services:
+  polymorphic-app:
+    build: .
+    ports:
+      - "8890:80"
+      - "4433:443"
+    user: $UID:$GID
+   # working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      #- /etc/group:/etc/group:ro
+      #- /etc/passwd:/etc/passwd:ro
+      #- /etc/shadow:/etc/shadow:ro
+    #tty: true
+    #command: tail -f /dev/null
+    networks:
+      - polymorphic-network
+    environment:
+      WEB_DOCUMENT_ROOT: /var/www/html
+  polymorphic-db:
+    image: mariadb:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3310:3306"
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: polymorphic
+      MYSQL_USER: polymorphic
+      MYSQL_PASSWORD: polymorphic123
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - polymorphic-network
+networks:
+  polymorphic-network:
+    driver: bridge
